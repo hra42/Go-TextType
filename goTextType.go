@@ -11,13 +11,14 @@ import (
 
 func main() {
 	log.Println("App is running...")
-	// listen for clipboard input
+	// register clipboard
 	err := clipboard.Init()
 	checkError(err)
 
-	// listen for hotkey input
+	// register hotkey
 	hk := hotkey.New([]hotkey.Modifier{hotkey.ModCtrl, hotkey.ModShift}, hotkey.KeyV)
 	err = hk.Register()
+	// when the program exits, the hotkey will unregister
 	defer func(hk *hotkey.Hotkey) {
 		err := hk.Unregister()
 		checkError(err)
@@ -26,9 +27,11 @@ func main() {
 	checkError(err)
 
 	for {
+		// listen for hotkey press
 		<-hk.Keydown()
 		log.Println("hotkey pressed")
 
+		// get clipboard text
 		clipBoardText := string(clipboard.Read(clipboard.FmtText))
 		if clipBoardText == "" {
 			log.Println("clipboard is empty")
@@ -36,14 +39,17 @@ func main() {
 		}
 		log.Println(clipBoardText)
 
+		// wait for 500ms before executing
 		time.Sleep(time.Millisecond * 500)
 
+		// build PowerShell command
 		cmdTemplate := "[void] [System.Reflection.Assembly]::LoadWithPartialName(\"System.Windows.Forms\"); " +
 			"$s = '%s'; " +
 			"$s = $s -replace '%%', '{%%}'; " +
 			"[System.Windows.Forms.SendKeys]::SendWait($s)"
 		cmdText := fmt.Sprintf(cmdTemplate, clipBoardText)
 
+		// execute PowerShell command
 		cmd := exec.Command("powershell", "-command", cmdText)
 		cmdOut, err := cmd.CombinedOutput()
 		if err != nil {
