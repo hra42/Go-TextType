@@ -2,14 +2,18 @@ package main
 
 import (
 	"embed"
-	"fmt"
 	"github.com/getlantern/systray"
+	"github.com/go-vgo/robotgo"
 	"golang.design/x/clipboard"
 	"golang.design/x/hotkey"
 	"log"
 	"os"
-	"os/exec"
 	"time"
+)
+
+var (
+	AppVersion string
+	BuildID    string
 )
 
 //go:embed icon.ico
@@ -21,7 +25,12 @@ var Logger = setupLogger()
 // LogFile setup
 var LogFile *os.File
 
+// HK Hotkey setup
+var HK = setup()
+
 func main() {
+	Logger.Println("The App Version is: ", AppVersion)
+	Logger.Println("The Build ID is: ", BuildID)
 	systray.Run(onReady, onExit)
 }
 
@@ -31,16 +40,15 @@ func onReady() {
 	systray.SetTitle("Text Type")
 	systray.SetTooltip("Control Text Type")
 
-	mStart := systray.AddMenuItem("Start Text Type", "Start the program")
 	mStop := systray.AddMenuItem("Stop Text Type", "Stop the program")
 
 	go func() {
 		for {
 			select {
-			case <-mStart.ClickedCh:
-				textType()
 			case <-mStop.ClickedCh:
 				log.Fatal("Stop the program")
+			case <-HK.Keydown():
+				textType()
 			}
 		}
 	}()
@@ -49,61 +57,43 @@ func onReady() {
 func onExit() {
 	Logger.Println("Exit the program...")
 	LogFile.Close()
+	// when the program exits, the hotkey will unregister
+	unregisterHotkey(HK)
 	systray.Quit()
 	os.Exit(0)
 }
 
-func textType() {
+func setup() (hk *hotkey.Hotkey) {
 	// register clipboard
 	err := clipboard.Init()
 	checkError(Logger, err)
 
 	// register hotkey
-	hk := hotkey.New([]hotkey.Modifier{hotkey.ModCtrl, hotkey.ModShift}, hotkey.KeyV)
+	hk = hotkey.New([]hotkey.Modifier{hotkey.ModCtrl, hotkey.ModShift}, hotkey.KeyV)
 	err = hk.Register()
-	// when the program exits, the hotkey will unregister
-	defer unregisterHotkey(hk)
 	Logger.Println("hotkey registered")
 	checkError(Logger, err)
+	return
+}
 
-	for {
-		// listen for hotkey press
-		<-hk.Keydown()
-		Logger.Println("hotkey pressed")
+func textType() {
+	Logger.Println("hotkey pressed")
 
-		// get clipboard text
-		clipBoardText := string(clipboard.Read(clipboard.FmtText))
-		if clipBoardText == "" {
-			Logger.Println("clipboard is empty")
-			break
-		}
-		Logger.Println(clipBoardText)
-
-		// wait for 500ms before executing
-		time.Sleep(time.Millisecond * 500)
-
-		// build PowerShell command
-		/*
-			TODO: The needs to be replaced with a better solution
-			When the program runs without CMD Prompt open windows
-			looses the focus of the main application the text is pasted into.
-		*/
-		cmdTemplate := "[void] [System.Reflection.Assembly]::LoadWithPartialName(\"System.Windows.Forms\"); " +
-			"$s = '%s'; " +
-			"$s = $s -replace '%%', '{%%}'; " +
-			"[System.Windows.Forms.SendKeys]::SendWait($s)"
-		cmdText := fmt.Sprintf(cmdTemplate, clipBoardText)
-
-		// execute PowerShell command
-		cmd := exec.Command("powershell", "-command", cmdText)
-		cmdOut, err := cmd.CombinedOutput()
-		if err != nil {
-			Logger.Println(err)
-			Logger.Println("Command output:", string(cmdOut))
-		}
-
-		Logger.Println("clipboard entered")
+	// get clipboard text
+	clipBoardText := string(clipboard.Read(clipboard.FmtText))
+	if clipBoardText == "" {
+		Logger.Println("clipboard is empty")
+		return
+	} else {
+		Logger.Println("clipboard has text")
 	}
+
+	// wait for 500ms before executing
+	time.Sleep(time.Millisecond * 500)
+
+	// use robotgo to type the clipboard text
+	robotgo.TypeStr(clipBoardText)
+	Logger.Println("clipboard entered")
 }
 
 func checkError(logger *log.Logger, err error) {
