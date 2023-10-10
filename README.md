@@ -3,9 +3,13 @@
 ![Icon](icon.jpeg)
 
 This program is designed to print text from the clipboard using Keyboard events.
+Password entry into console applications is enabled by this feature.
+The Hotkey is: 
+- ISO Layout: `left ctrl + left shift + v`
+- DE Layout: `links strg + links shift + v`
+
 This project contains a program implemented in Go (version 1.21) using the Go SDK (version 1.21.1).
 It is designed to print text from the clipboard using Keyboard events.
-The application is developed specifically to used with GoLand 2023.2.2 running on a Windows 11 (amd64) system.
 
 ## Functionality
 The main functionality of this program is as described:
@@ -25,7 +29,7 @@ The required Go packages for this project to function include:
 Download the latest version of the application from the release page.
 
 ## Compilation
-Download the code from GitHub and run for Windows:
+Download the code from GitHub and run the compilation on Windows:
 ```Bash
 go build -ldflags '-extldflags "-static" -w -s -H windowsgui -X main.AppVersion=INSERT_VERSION -X main.BuildID=BUILDID' .
 ```
