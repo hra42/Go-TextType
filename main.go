@@ -2,6 +2,7 @@ package main
 
 import (
 	"embed"
+	"encoding/gob"
 	"github.com/getlantern/systray"
 	"github.com/go-vgo/robotgo"
 	"golang.design/x/clipboard"
@@ -17,6 +18,10 @@ var (
 	BuildID    string
 )
 
+var HotKeyConfig struct {
+	HotkeyNumber int
+}
+
 //go:embed icon.ico
 var Icon embed.FS
 
@@ -27,11 +32,13 @@ var Logger = setupLogger()
 var LogFile *os.File
 
 // HK Hotkey setup
-var HK = setup()
+var HK *hotkey.Hotkey
 
 func main() {
 	Logger.Println("The App Version is: ", AppVersion)
 	Logger.Println("The Build ID is: ", BuildID)
+	loadHK()
+	setup()
 	systray.Run(onReady, onExit)
 }
 
@@ -41,13 +48,60 @@ func onReady() {
 	systray.SetTitle("Text Type")
 	systray.SetTooltip("Control Text Type")
 
+	mHk := systray.AddMenuItem("Modify Hotkey", "Modify the hotkey")
+	mHK1 := mHk.AddSubMenuItemCheckbox("Ctrl + Shift + V", "Ctrl + Shift + V", true)
+	mHK2 := mHk.AddSubMenuItemCheckbox("Ctrl + Shift + S", "Ctrl + Shift + S", false)
+	systray.AddSeparator()
 	mStop := systray.AddMenuItem("Stop Text Type", "Stop the program")
+
+	if HotKeyConfig.HotkeyNumber == 1 {
+		mHK1.Check()
+		mHK2.Uncheck()
+	} else if HotKeyConfig.HotkeyNumber == 2 {
+		mHK1.Uncheck()
+		mHK2.Check()
+	} else {
+		mHK1.Uncheck()
+		mHK2.Uncheck()
+	}
 
 	go func() {
 		for {
 			select {
+			case <-mHK1.ClickedCh:
+				if HotKeyConfig.HotkeyNumber == 1 {
+					Logger.Println("Hotkey", HotKeyConfig.HotkeyNumber, "is already selected")
+				} else {
+					// delete current hotkey
+					unregisterHotkey(HK)
+					// set the hotkey
+					HK = hotkey.New([]hotkey.Modifier{hotkey.ModCtrl, hotkey.ModShift}, hotkey.KeyV)
+					registerHotKey(HK)
+					// save last used hotkey to disk
+					err := saveLastUsedHK(1)
+					checkError(Logger, err)
+					// Update Menu
+					mHK2.Uncheck()
+					mHK1.Check()
+				}
+			case <-mHK2.ClickedCh:
+				if HotKeyConfig.HotkeyNumber == 2 {
+					Logger.Println("Hotkey", HotKeyConfig.HotkeyNumber, "is already used")
+				} else {
+					// delete current hotkey
+					unregisterHotkey(HK)
+					// set the selected hotkey
+					HK = hotkey.New([]hotkey.Modifier{hotkey.ModCtrl, hotkey.ModShift}, hotkey.KeyS)
+					registerHotKey(HK)
+					// save the selected hotkey to disk
+					err := saveLastUsedHK(2)
+					checkError(Logger, err)
+					// set the menu
+					mHK1.Uncheck()
+					mHK2.Check()
+				}
 			case <-mStop.ClickedCh:
-				log.Fatal("Stop the program")
+				onExit()
 			case <-HK.Keydown():
 				textType()
 			}
@@ -65,17 +119,16 @@ func onExit() {
 	os.Exit(0)
 }
 
-func setup() (hk *hotkey.Hotkey) {
+func setup() {
 	// register clipboard
 	err := clipboard.Init()
 	checkError(Logger, err)
+}
 
-	// register hotkey
-	hk = hotkey.New([]hotkey.Modifier{hotkey.ModCtrl, hotkey.ModShift}, hotkey.KeyV)
-	err = hk.Register()
-	Logger.Println("hotkey registered")
+func registerHotKey(hk *hotkey.Hotkey) {
+	err := hk.Register()
+	Logger.Println("hotkey", HotKeyConfig.HotkeyNumber, "registered")
 	checkError(Logger, err)
-	return
 }
 
 func textType() {
@@ -107,6 +160,7 @@ func checkError(logger *log.Logger, err error) {
 func unregisterHotkey(hk *hotkey.Hotkey) {
 	err := hk.Unregister()
 	checkError(Logger, err)
+	Logger.Println("hotkey", HotKeyConfig.HotkeyNumber, "unregistered")
 }
 
 func readIcon() (data []byte) {
@@ -125,4 +179,58 @@ func setupLogger() (logger *log.Logger) {
 	// Create a new logger
 	logger = log.New(LogFile, "TextType ", log.LstdFlags)
 	return
+}
+
+func closeFile(file *os.File) {
+	err := file.Close()
+	checkError(Logger, err)
+}
+
+func saveLastUsedHK(hkNumber int) error {
+	file, err := os.Create("hotkey.gob")
+	if err != nil {
+		return err
+	}
+	defer closeFile(file)
+
+	HotKeyConfig.HotkeyNumber = hkNumber
+	enc := gob.NewEncoder(file)
+	err = enc.Encode(HotKeyConfig)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func loadHK() {
+	file, err := os.Open("hotkey.gob")
+	if err != nil {
+		if os.IsNotExist(err) {
+			Logger.Println("No hotkey.gob file found")
+			HK = hotkey.New([]hotkey.Modifier{hotkey.ModCtrl, hotkey.ModShift}, hotkey.KeyV)
+			registerHotKey(HK)
+			err = saveLastUsedHK(1)
+			checkError(Logger, err)
+			return
+		}
+		Logger.Println("Error: ", err)
+		checkError(Logger, err)
+	}
+	defer closeFile(file)
+
+	dec := gob.NewDecoder(file)
+	err = dec.Decode(&HotKeyConfig)
+	checkError(Logger, err)
+	Logger.Println("hotkey.gob loaded and decoded")
+	switch HotKeyConfig.HotkeyNumber {
+	case 1:
+		Logger.Println("Hotkey 1 is in use")
+		HK = hotkey.New([]hotkey.Modifier{hotkey.ModCtrl, hotkey.ModShift}, hotkey.KeyV)
+		registerHotKey(HK)
+	case 2:
+		Logger.Println("Hotkey 2 is in use")
+		HK = hotkey.New([]hotkey.Modifier{hotkey.ModCtrl, hotkey.ModShift}, hotkey.KeyS)
+		registerHotKey(HK)
+	}
 }
