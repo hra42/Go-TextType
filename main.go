@@ -70,7 +70,7 @@ func onReady() {
 			select {
 			case <-mHK1.ClickedCh:
 				if HotKeyConfig.HotkeyNumber == 1 {
-					continue
+					Logger.Println("Hotkey", HotKeyConfig.HotkeyNumber, "is already selected")
 				} else {
 					// delete current hotkey
 					unregisterHotkey(HK)
@@ -86,7 +86,7 @@ func onReady() {
 				}
 			case <-mHK2.ClickedCh:
 				if HotKeyConfig.HotkeyNumber == 2 {
-					continue
+					Logger.Println("Hotkey", HotKeyConfig.HotkeyNumber, "is already used")
 				} else {
 					// delete current hotkey
 					unregisterHotkey(HK)
@@ -126,9 +126,8 @@ func setup() {
 }
 
 func registerHotKey(hk *hotkey.Hotkey) {
-	// hk = hotkey.New([]hotkey.Modifier{hotkey.ModCtrl, hotkey.ModShift}, hotkey.KeyV)
 	err := hk.Register()
-	Logger.Println("hotkey registered")
+	Logger.Println("hotkey", HotKeyConfig.HotkeyNumber, "registered")
 	checkError(Logger, err)
 }
 
@@ -161,7 +160,7 @@ func checkError(logger *log.Logger, err error) {
 func unregisterHotkey(hk *hotkey.Hotkey) {
 	err := hk.Unregister()
 	checkError(Logger, err)
-	Logger.Println("hotkey unregistered")
+	Logger.Println("hotkey", HotKeyConfig.HotkeyNumber, "unregistered")
 }
 
 func readIcon() (data []byte) {
@@ -213,6 +212,7 @@ func loadHK() {
 			registerHotKey(HK)
 			err = saveLastUsedHK(1)
 			checkError(Logger, err)
+			return
 		}
 		Logger.Println("Error: ", err)
 		checkError(Logger, err)
@@ -222,12 +222,14 @@ func loadHK() {
 	dec := gob.NewDecoder(file)
 	err = dec.Decode(&HotKeyConfig)
 	checkError(Logger, err)
-
+	Logger.Println("hotkey.gob loaded and decoded")
 	switch HotKeyConfig.HotkeyNumber {
 	case 1:
+		Logger.Println("Hotkey 1 is in use")
 		HK = hotkey.New([]hotkey.Modifier{hotkey.ModCtrl, hotkey.ModShift}, hotkey.KeyV)
 		registerHotKey(HK)
 	case 2:
+		Logger.Println("Hotkey 2 is in use")
 		HK = hotkey.New([]hotkey.Modifier{hotkey.ModCtrl, hotkey.ModShift}, hotkey.KeyS)
 		registerHotKey(HK)
 	}
