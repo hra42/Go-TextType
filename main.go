@@ -12,6 +12,7 @@ import (
 )
 
 var (
+	// AppVersion BuildID Information
 	AppVersion string
 	BuildID    string
 )
@@ -56,7 +57,8 @@ func onReady() {
 
 func onExit() {
 	Logger.Println("Exit the program...")
-	LogFile.Close()
+	err := LogFile.Close()
+	checkError(Logger, err)
 	// when the program exits, the hotkey will unregister
 	unregisterHotkey(HK)
 	systray.Quit()
@@ -121,6 +123,6 @@ func setupLogger() (logger *log.Logger) {
 	}
 
 	// Create a new logger
-	logger = log.New(LogFile, "app ", log.LstdFlags)
+	logger = log.New(LogFile, "TextType ", log.LstdFlags)
 	return
 }
