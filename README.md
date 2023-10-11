@@ -8,8 +8,8 @@ With version 0.1.2 you can switch the hotkey between:
 - ISO Layout: `left ctrl + left shift + v`
 - DE Layout: `links strg + links shift + v`  
 or  
-- ISO Layout: `left ctrl + left shift + s`
-- DE Layout: `links strg + links shift + s`  
+- ISO Layout: `left ctrl + left alt + s`
+- DE Layout: `links strg + links alt + s`  
 
 The HotKey is stored in a file called `hotkey.gob` within the same folder you run the application.
 

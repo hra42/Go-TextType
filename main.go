@@ -50,7 +50,7 @@ func onReady() {
 
 	mHk := systray.AddMenuItem("Modify Hotkey", "Modify the hotkey")
 	mHK1 := mHk.AddSubMenuItemCheckbox("Ctrl + Shift + V", "Ctrl + Shift + V", true)
-	mHK2 := mHk.AddSubMenuItemCheckbox("Ctrl + Shift + S", "Ctrl + Shift + S", false)
+	mHK2 := mHk.AddSubMenuItemCheckbox("Ctrl + Alt + S", "Ctrl + Alt + S", false)
 	systray.AddSeparator()
 	mStop := systray.AddMenuItem("Stop Text Type", "Stop the program")
 
@@ -91,7 +91,7 @@ func onReady() {
 					// delete current hotkey
 					unregisterHotkey(HK)
 					// set the selected hotkey
-					HK = hotkey.New([]hotkey.Modifier{hotkey.ModCtrl, hotkey.ModShift}, hotkey.KeyS)
+					HK = hotkey.New([]hotkey.Modifier{hotkey.ModCtrl, hotkey.ModAlt}, hotkey.KeyS)
 					registerHotKey(HK)
 					// save the selected hotkey to disk
 					err := saveLastUsedHK(2)
@@ -230,7 +230,7 @@ func loadHK() {
 		registerHotKey(HK)
 	case 2:
 		Logger.Println("Hotkey 2 is in use")
-		HK = hotkey.New([]hotkey.Modifier{hotkey.ModCtrl, hotkey.ModShift}, hotkey.KeyS)
+		HK = hotkey.New([]hotkey.Modifier{hotkey.ModCtrl, hotkey.ModAlt}, hotkey.KeyS)
 		registerHotKey(HK)
 	}
 }
