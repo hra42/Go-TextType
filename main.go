@@ -51,18 +51,26 @@ func onReady() {
 	mHk := systray.AddMenuItem("Modify Hotkey", "Modify the hotkey")
 	mHK1 := mHk.AddSubMenuItemCheckbox("Ctrl + Shift + V", "Ctrl + Shift + V", true)
 	mHK2 := mHk.AddSubMenuItemCheckbox("Ctrl + Alt + S", "Ctrl + Alt + S", false)
+	mHK3 := mHk.AddSubMenuItemCheckbox("Ctrl + Q", "Ctrl + Q", false)
 	systray.AddSeparator()
 	mStop := systray.AddMenuItem("Stop Text Type", "Stop the program")
 
 	if HotKeyConfig.HotkeyNumber == 1 {
 		mHK1.Check()
 		mHK2.Uncheck()
+		mHK3.Uncheck()
 	} else if HotKeyConfig.HotkeyNumber == 2 {
 		mHK1.Uncheck()
 		mHK2.Check()
+		mHK3.Uncheck()
+	} else if HotKeyConfig.HotkeyNumber == 3 {
+		mHK1.Uncheck()
+		mHK2.Uncheck()
+		mHK3.Check()
 	} else {
 		mHK1.Uncheck()
 		mHK2.Uncheck()
+		mHK3.Uncheck()
 	}
 
 	go func() {
@@ -81,8 +89,9 @@ func onReady() {
 					err := saveLastUsedHK(1)
 					checkError(Logger, err)
 					// Update Menu
-					mHK2.Uncheck()
 					mHK1.Check()
+					mHK2.Uncheck()
+					mHK3.Uncheck()
 				}
 			case <-mHK2.ClickedCh:
 				if HotKeyConfig.HotkeyNumber == 2 {
@@ -99,7 +108,26 @@ func onReady() {
 					// set the menu
 					mHK1.Uncheck()
 					mHK2.Check()
+					mHK3.Uncheck()
 				}
+			case <-mHK3.ClickedCh:
+				if HotKeyConfig.HotkeyNumber == 3 {
+					Logger.Println("Hotkey", HotKeyConfig.HotkeyNumber, "is already used")
+				} else {
+					// delete current hotkey
+					unregisterHotkey(HK)
+					// set the selected hotkey
+					HK = hotkey.New([]hotkey.Modifier{hotkey.ModCtrl}, hotkey.KeyQ)
+					registerHotKey(HK)
+					// save the selected hotkey to disk
+					err := saveLastUsedHK(3)
+					checkError(Logger, err)
+					// set the menu
+					mHK1.Uncheck()
+					mHK2.Uncheck()
+					mHK3.Check()
+				}
+			case <-mStop.ClickedCh:
 			case <-mStop.ClickedCh:
 				onExit()
 			case <-HK.Keydown():
@@ -231,6 +259,10 @@ func loadHK() {
 	case 2:
 		Logger.Println("Hotkey 2 is in use")
 		HK = hotkey.New([]hotkey.Modifier{hotkey.ModCtrl, hotkey.ModAlt}, hotkey.KeyS)
+		registerHotKey(HK)
+	case 3:
+		Logger.Println("Hotkey 3 is in use")
+		HK = hotkey.New([]hotkey.Modifier{hotkey.ModCtrl}, hotkey.KeyQ)
 		registerHotKey(HK)
 	}
 }
