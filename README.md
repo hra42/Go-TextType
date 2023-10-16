@@ -1,5 +1,9 @@
 # Go-TextType
 
+> [!NOTE]
+> Download the latest version from the [release page](https://github.com/HRA42/Go-TextType/releases)
+> and run the executable.
+
 ![Icon](icon.jpeg)
 
 This program is designed to print text from the clipboard using Keyboard events.
@@ -10,6 +14,9 @@ With version 0.1.2 you can switch the hotkey between:
 or  
 - ISO Layout: `left ctrl + left alt + s`
 - DE Layout: `links strg + links alt + s`  
+or  
+- ISO Layout: `left ctrl + Q`
+- DE Layout: `links strg + Q`
 
 The HotKey is stored in a file called `hotkey.gob` within the same folder you run the application.
 
@@ -40,7 +47,7 @@ Download the latest version of the application from the release page.
 ## Compilation
 Download the code from GitHub and run the compilation on Windows:
 ```Bash
-go build -ldflags '-extldflags "-static" -w -s -H windowsgui -X main.AppVersion=INSERT_VERSION -X main.BuildID=BUILDID' .
+go build -ldflags '-extldflags "-static" -w -s -H windowsgui -X main.AppVersion=VERSION -X main.BuildID=BUILDID' .
 ```
 
 ## Troubleshooting
