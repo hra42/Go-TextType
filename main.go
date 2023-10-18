@@ -48,10 +48,10 @@ func onReady() {
 	systray.SetTitle("Text Type")
 	systray.SetTooltip("Control Text Type")
 
-	mHk := systray.AddMenuItem("Modify Hotkey", "Modify the hotkey")
-	mHK1 := mHk.AddSubMenuItemCheckbox("Ctrl + Shift + V", "Ctrl + Shift + V", true)
-	mHK2 := mHk.AddSubMenuItemCheckbox("Ctrl + Alt + S", "Ctrl + Alt + S", false)
-	mHK3 := mHk.AddSubMenuItemCheckbox("Ctrl + Q", "Ctrl + Q", false)
+	mHK := systray.AddMenuItem("Modify Hotkey", "Modify the hotkey")
+	mHK1 := mHK.AddSubMenuItemCheckbox("Ctrl + Shift + V", "Ctrl + Shift + V", true)
+	mHK2 := mHK.AddSubMenuItemCheckbox("Ctrl + Alt + S", "Ctrl + Alt + S", false)
+	mHK3 := mHK.AddSubMenuItemCheckbox("Ctrl + Q", "Ctrl + Q", false)
 	systray.AddSeparator()
 	mStop := systray.AddMenuItem("Stop Text Type", "Stop the program")
 
@@ -127,7 +127,6 @@ func onReady() {
 					mHK2.Uncheck()
 					mHK3.Check()
 				}
-			case <-mStop.ClickedCh:
 			case <-mStop.ClickedCh:
 				onExit()
 			case <-HK.Keydown():
