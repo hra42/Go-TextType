@@ -9,6 +9,7 @@ import (
 	"golang.design/x/hotkey"
 	"log"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -173,8 +174,12 @@ func textType() {
 	// wait for 500ms before executing
 	time.Sleep(time.Millisecond * 500)
 
-	// use robotgo to type the clipboard text
+	// trim whitespace from the clipboard text
+	clipBoardText = strings.TrimSpace(clipBoardText)
+	// use robotgo to type the clipboard text.
 	robotgo.TypeStr(clipBoardText)
+	// press enter key
+	robotgo.KeyTap("enter")
 	Logger.Println("clipboard entered")
 }
 
