@@ -8,8 +8,9 @@
 
 This program is designed to print text from the clipboard using Keyboard events.
 Password entry into console applications is enabled by this feature.
-Version 1.1 adds the ability to remove whitespace from the clipboard and pressing entered after the input is entered.
-With version 0.1.2 you can switch the hotkey between: 
+Version 1.1.1 adds the ability to remove whitespace from the clipboard and
+pressing entered after the input is entered, if you select the option from the menu bar.
+From version 0.1.2 you can switch the hotkey between: 
 - ISO Layout: `left ctrl + left shift + v`
 - DE Layout: `links strg + links shift + v`  
 or  
