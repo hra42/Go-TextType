@@ -21,6 +21,7 @@ var (
 
 var HotKeyConfig struct {
 	HotkeyNumber int
+	EnterKey     bool
 }
 
 //go:embed icon.ico
@@ -54,6 +55,12 @@ func onReady() {
 	mHK2 := mHK.AddSubMenuItemCheckbox("Ctrl + Alt + S", "Ctrl + Alt + S", false)
 	mHK3 := mHK.AddSubMenuItemCheckbox("Ctrl + Q", "Ctrl + Q", false)
 	systray.AddSeparator()
+	selectEnterPressAfterPaste := systray.AddMenuItemCheckbox(
+		"Should the enter key be pressed after the Text is pasted?",
+		"Select Enter Press",
+		false,
+	)
+	systray.AddSeparator()
 	mStop := systray.AddMenuItem("Stop Text Type", "Stop the program")
 
 	if HotKeyConfig.HotkeyNumber == 1 {
@@ -72,6 +79,12 @@ func onReady() {
 		mHK1.Uncheck()
 		mHK2.Uncheck()
 		mHK3.Uncheck()
+	}
+
+	if HotKeyConfig.EnterKey {
+		selectEnterPressAfterPaste.Check()
+	} else {
+		selectEnterPressAfterPaste.Uncheck()
 	}
 
 	go func() {
@@ -132,6 +145,22 @@ func onReady() {
 				onExit()
 			case <-HK.Keydown():
 				textType()
+			case <-selectEnterPressAfterPaste.ClickedCh:
+				if HotKeyConfig.EnterKey == true {
+					HotKeyConfig.EnterKey = false
+					selectEnterPressAfterPaste.Uncheck()
+					err := saveLastUsedHK(HotKeyConfig.HotkeyNumber)
+					if err != nil {
+						Logger.Println(err)
+					}
+				} else {
+					HotKeyConfig.EnterKey = true
+					err := saveLastUsedHK(HotKeyConfig.HotkeyNumber)
+					if err != nil {
+						Logger.Println(err)
+					}
+					selectEnterPressAfterPaste.Check()
+				}
 			}
 		}
 	}()
@@ -179,7 +208,9 @@ func textType() {
 	// use robotgo to type the clipboard text.
 	robotgo.TypeStr(clipBoardText)
 	// press enter key
-	robotgo.KeyTap("enter")
+	if HotKeyConfig.EnterKey == true {
+		robotgo.KeyTap("enter")
+	}
 	Logger.Println("clipboard entered")
 }
 
