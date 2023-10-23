@@ -3,8 +3,11 @@ package main
 import (
 	"embed"
 	"encoding/gob"
+	"github.com/gen2brain/beeep"
 	"github.com/getlantern/systray"
 	"github.com/go-vgo/robotgo"
+	"github.com/pkg/browser"
+	"github.com/tcnksm/go-latest"
 	"golang.design/x/clipboard"
 	"golang.design/x/hotkey"
 	"log"
@@ -39,6 +42,7 @@ var HK *hotkey.Hotkey
 func main() {
 	Logger.Println("The App Version is: ", AppVersion)
 	Logger.Println("The Build ID is: ", BuildID)
+	checkUpdate()
 	loadHK()
 	setup()
 	systray.Run(onReady, onExit)
@@ -249,6 +253,11 @@ func closeFile(file *os.File) {
 	checkError(Logger, err)
 }
 
+func deleteFile(file *os.File) {
+	err := os.Remove(file.Name())
+	checkError(Logger, err)
+}
+
 func saveLastUsedHK(hkNumber int) error {
 	file, err := os.Create("hotkey.gob")
 	if err != nil {
@@ -299,5 +308,34 @@ func loadHK() {
 		Logger.Println("Hotkey 3 is in use")
 		HK = hotkey.New([]hotkey.Modifier{hotkey.ModCtrl}, hotkey.KeyQ)
 		registerHotKey(HK)
+	}
+}
+
+func checkUpdate() {
+	dumpfile, err := os.CreateTemp("", "icon.*.png")
+	checkError(Logger, err)
+	defer deleteFile(dumpfile)
+	if _, err = dumpfile.Write(readIcon()); err != nil {
+		checkError(Logger, err)
+	}
+	if err = dumpfile.Close(); err != nil {
+		checkError(Logger, err)
+	}
+	githubTag := &latest.GithubTag{
+		Owner:      "HRA42",
+		Repository: "Go-TextType",
+	}
+	res, err := latest.Check(githubTag, AppVersion)
+	checkError(Logger, err)
+	if res.Outdated {
+		err = beeep.Alert(
+			"Update Available!",
+			"A new version of Go-TextType is available!",
+			dumpfile.Name(),
+		)
+		checkError(Logger, err)
+		Logger.Println("Update available")
+		err := browser.OpenURL("https://github.com/HRA42/Go-TextType/releases/latest")
+		checkError(Logger, err)
 	}
 }

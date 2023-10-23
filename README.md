@@ -2,7 +2,8 @@
 
 > [!NOTE]
 > Download the latest version from the [release page](https://github.com/HRA42/Go-TextType/releases)
-> and run the executable.
+> and run the executable.  
+> Version 1.1.2 implements an update check, so you can keep track of the latest version!
 
 ![Icon](icon.jpeg)
 
