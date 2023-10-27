@@ -1,9 +1,12 @@
 # Go-TextType
 
-> [!Important]
-> Download the latest version from the [release page](https://github.com/HRA42/Go-TextType/releases)
-> and run the executable.  
-> Visit the [docs](https://go-texttype.postrausch.tech/) for more information.
+<tldr>
+How to get started with Go-TextType?
+<p>
+Download the latest version from the <a href="https://github.com/HRA42/Go-TextType/releases">release page</a>
+and run the executable.
+</p>
+</tldr>
 
 ![Icon](icon.jpeg)
 
@@ -26,7 +29,7 @@ The HotKey is stored in a file called `hotkey.gob` within the same folder you ru
 If you need any additional HotKeys or have some issues to report, please contact me or create an issue on
 [GitHub](https://github.com/HRA42/Go-TextType/issues).
 
-This project contains a program implemented in Go (version 1.21) using the Go SDK (version 1.21.1).
+This project contains a program implemented in Go (version 1.21) using the Go SDK (version 1.21.3).
 It is designed to print text from the clipboard using Keyboard events.
 
 ## Functionality
@@ -58,15 +61,30 @@ git clone https://github.com/HRA42/Go-TextType.git
 
 Download the dependencies:
 ```Shell
+```
+{src="make.ps1" include-lines="36-42"}
+
+Or run:
+```Shell
 Powershell.exe -File .\build.ps1 dep
 ```
 
 After you install the dependencies, run:
+```Shell
+```
+{src="make.ps1" include-lines="11-20"}
+
+Or run:
 ```Bash
 Powershell.exe -File .\build.ps1 build
 ```
 
 When you are ready to start a new build, run:
+```Shell
+```
+{src="make.ps1" include-lines="24-32"}
+
+Or run:
 ```Bash
 Powershell.exe -File .\build.ps1 clean
 ```
