@@ -1,9 +1,9 @@
 # Go-TextType
 
-> [!NOTE]
+> [!Important]
 > Download the latest version from the [release page](https://github.com/HRA42/Go-TextType/releases)
 > and run the executable.  
-> Version 1.1.2 implements an update check, so you can keep track of the latest version!
+> Visit the [docs](https://go-texttype.postrausch.tech/) for more information.
 
 ![Icon](icon.jpeg)
 
@@ -23,7 +23,7 @@ or
 
 The HotKey is stored in a file called `hotkey.gob` within the same folder you run the application.
 
-If you need any additional HotKey, please contact me or create an issue on
+If you need any additional HotKeys or have some issues to report, please contact me or create an issue on
 [GitHub](https://github.com/HRA42/Go-TextType/issues).
 
 This project contains a program implemented in Go (version 1.21) using the Go SDK (version 1.21.1).
@@ -38,9 +38,12 @@ This triggered function fetches the content from the clipboard and prints it on 
 ## Dependencies
 The required Go packages for this project to function include:
 - embed for embedding files in executable.
-- encoding/gob for encoding the hotkey to a file
+- encoding/gob for encoding the hotkey and enter preference to a file.
+- github.com/gen2brain/beeep for update notifications.
 - github.com/getlantern/systray for system tray functionality.
 - github.com/go-vgo/robotgo for simulating keyboard inputs.
+- github.com/pkg/browser for opening a browser to the release page on GH.
+- github.com/tcnksm/go-latest for getting the latest version from GH.
 - golang.design/x/clipboard for access to the system clipboard.
 - golang.design/x/hotkey for creating and managing hotkeys.
 
@@ -48,9 +51,24 @@ The required Go packages for this project to function include:
 Download the latest version of the application from the release page.
 
 ## Compilation
-Download the code from GitHub and run the compilation on Windows:
+Get the source code from GitHub:
 ```Bash
-go build -ldflags '-extldflags "-static" -w -s -H windowsgui -X main.AppVersion=VERSION -X main.BuildID=BUILDID' .
+git clone https://github.com/HRA42/Go-TextType.git
+```
+
+Download the dependencies:
+```Shell
+Powershell.exe -File .\build.ps1 dep
+```
+
+After you install the dependencies, run:
+```Bash
+Powershell.exe -File .\build.ps1 build
+```
+
+When you are ready to start a new build, run:
+```Bash
+Powershell.exe -File .\build.ps1 clean
 ```
 
 ## Troubleshooting
