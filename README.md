@@ -35,41 +35,13 @@ The application is designed to print the text stored in the clipboard.
 It achieves this by calling a hotkey combination that triggers a function in the program.
 This triggered function fetches the content from the clipboard and prints it on the console.
 
-## Dependencies
-The required Go packages for this project to function include:
-- embed for embedding files in executable.
-- encoding/gob for encoding the hotkey and enter preference to a file.
-- github.com/gen2brain/beeep for update notifications.
-- github.com/getlantern/systray for system tray functionality.
-- github.com/go-vgo/robotgo for simulating keyboard inputs.
-- github.com/pkg/browser for opening a browser to the release page on GH.
-- github.com/tcnksm/go-latest for getting the latest version from GH.
-- golang.design/x/clipboard for access to the system clipboard.
-- golang.design/x/hotkey for creating and managing hotkeys.
-
 ## Running the Program
 Download the latest version of the application from the release page.
 
-## Compilation
-Get the source code from GitHub:
-```Bash
-git clone https://github.com/HRA42/Go-TextType.git
-```
-
-Download the dependencies:
-```Shell
-Powershell.exe -File .\build.ps1 dep
-```
-
-After you install the dependencies, run:
-```Bash
-Powershell.exe -File .\build.ps1 build
-```
-
-When you are ready to start a new build, run:
-```Bash
-Powershell.exe -File .\build.ps1 clean
-```
+## Contributing
+If you want to contribute or just compile the app yourself,
+you can follow the [guide.](https://go-texttype.postrausch.tech/contribute.html)
+Before you start to contribute, please read the [contribution file.](./CONTRIBUTING.md)
 
 ## Troubleshooting
 The program logs the current version of the application, and the Build ID in its log file TextType.log.
