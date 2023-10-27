@@ -1,5 +1,7 @@
 # Go-TextType
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/hra42/Go-TextType)](https://goreportcard.com/report/github.com/hra42/Go-TextType)
+
 > [!Important]
 > Download the latest version from the [release page](https://github.com/HRA42/Go-TextType/releases)
 > and run the executable.  
