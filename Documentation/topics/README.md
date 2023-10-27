@@ -53,41 +53,7 @@ The required Go packages for this project to function include:
 ## Running the Program
 Download the latest version of the application from the release page.
 
-## Compilation
-Get the source code from GitHub:
-```Bash
-git clone https://github.com/HRA42/Go-TextType.git
-```
 
-Download the dependencies:
-```Shell
-```
-{src="make.ps1" include-lines="36-42"}
-
-Or run:
-```Shell
-Powershell.exe -File .\build.ps1 dep
-```
-
-After you install the dependencies, run:
-```Shell
-```
-{src="make.ps1" include-lines="11-20"}
-
-Or run:
-```Bash
-Powershell.exe -File .\build.ps1 build
-```
-
-When you are ready to start a new build, run:
-```Shell
-```
-{src="make.ps1" include-lines="24-32"}
-
-Or run:
-```Bash
-Powershell.exe -File .\build.ps1 clean
-```
 
 ## Troubleshooting
 The program logs the current version of the application, and the Build ID in its log file TextType.log.
