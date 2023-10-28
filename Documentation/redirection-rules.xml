@@ -10,4 +10,12 @@
         <description>Created after removal of "About Documentation" from Documentation</description>
         <accepts>starter-topic.html</accepts>
     </rule>
+    <rule id="56a8040d">
+        <description>Created after removal of "VERION TO BE RELEASED" from Documentation</description>
+        <accepts>template-release.html</accepts>
+    </rule>
+    <rule id="4ce271f">
+        <description>Created after removal of "v1.1.1" from Documentation</description>
+        <accepts>v1-1-1.html</accepts>
+    </rule>
 </rules>

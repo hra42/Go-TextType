@@ -9,7 +9,9 @@
         <header-logo>icon.png</header-logo>
     </variables>
     <build-profile instance="docs">
-        <variables/>
+        <variables>
+            <noindex-content>false</noindex-content>
+        </variables>
     </build-profile>
     <footer>
         <copyright>2021 - 2023</copyright>

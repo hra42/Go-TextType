@@ -11,9 +11,8 @@
 
 This program is designed to print text from the clipboard using Keyboard events.
 Password entry into console applications is enabled by this feature.
-Version 1.1.1 adds the ability to remove whitespace from the clipboard and
-pressing entered after the input is entered, if you select the option from the menu bar.
-From version 0.1.2 you can switch the hotkey between: 
+
+## Available HotKeys
 - ISO Layout: `left ctrl + left shift + v`
 - DE Layout: `links strg + links shift + v`  
 or  
@@ -22,14 +21,6 @@ or
 or  
 - ISO Layout: `left ctrl + Q`
 - DE Layout: `links strg + Q`
-
-The HotKey is stored in a file called `hotkey.gob` within the same folder you run the application.
-
-If you need any additional HotKeys or have some issues to report, please contact me or create an issue on
-[GitHub](https://github.com/HRA42/Go-TextType/issues).
-
-This project contains a program implemented in Go (version 1.21) using the Go SDK (version 1.21.1).
-It is designed to print text from the clipboard using Keyboard events.
 
 ## Functionality
 The main functionality of this program is as described:
@@ -40,6 +31,9 @@ This triggered function fetches the content from the clipboard and prints it on 
 ## Running the Program
 Download the latest version of the application from the release page.
 
+## Change Log
+Check out the [Change Log](https://go-texttype.postrausch.tech/changelog.html)
+
 ## Contributing
 If you want to contribute or just compile the app yourself,
 you can follow the [guide.](https://go-texttype.postrausch.tech/contribute.html)
@@ -48,3 +42,7 @@ Before you start to contribute, please read the [contribution file.](./CONTRIBUT
 ## Troubleshooting
 The program logs the current version of the application, and the Build ID in its log file TextType.log.
 You may refer to this file for troubleshooting and referencing specific versions of the application.
+
+## Feedback
+If you have any suggestions or questions,
+please feel free to open an issue on [GitHub](https://github.com/HRA42/Go-TextType/issues).
