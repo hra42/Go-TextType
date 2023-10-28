@@ -3,9 +3,17 @@
         SYSTEM "https://resources.jetbrains.com/writerside/1.0/product-profile.dtd">
 
 <instance-profile id="docs"
-                 name="Documentation"
+                 name="Go-TextType Documentation"
                  start-page="README.md">
 
     <toc-element topic="README.md"/>
     <toc-element topic="Contribute.md"/>
+    <toc-element topic="Changelog.md">
+        <toc-element topic="v1-1-3.md">
+        </toc-element>
+        <toc-element topic="v1-1-2.md"/>
+        <toc-element topic="v1-1-1.md"/>
+        <toc-element topic="v1-1-0.md"/>
+        <toc-element topic="v1-0-0.md"/>
+    </toc-element>
 </instance-profile>
