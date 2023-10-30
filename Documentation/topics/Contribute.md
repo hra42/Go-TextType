@@ -60,6 +60,11 @@ This guide will help you contribute to the Go-TextType project. Follow the steps
     - For the compiler to work on other terminals, you will need to set up the windows `PATH` variable to find these tools.  
     Go to the “Edit the system environment variables” control panel, tap “Advanced” and add
     “C:\msys64\mingw64\bin” to the `Path list`.
+3. Install UPX:
+    - If you have chocolatey installed, run `choco install upx` from the command line with administrator privileges.
+      - If you don't have chocolatey installed,
+      you can get the latest UPX –
+        X64 Win64 version from [GitHub](https://github.com/upx/upx/releases/latest) and install it.
 
 ### Get the source code from GitHub
 
@@ -71,29 +76,42 @@ git clone https://github.com/HRA42/Go-TextType.git
 
 ```Shell
 ```
-{src="make.ps1" include-lines="36-42"}
+{src="make.ps1" include-lines="39-45"}
 
 Or run:
 ```Shell
 Powershell.exe -File .\build.ps1 dep
 ```
 
-### To build the application
+### Build the application
 
+#### Set the version and build ID
+- Setting the version and build ID is needed to have a unique version for each build and check the logs.
 ```Shell
 ```
-{src="make.ps1" include-lines="11-20"}
+{src="make.ps1" include-lines="6-7"}
+
+#### Clean the application folder
+[Check the docs for cleaning](#clean-the-application-and-temp-files)
+
+This is done by the build command automatically (see below).
+
+#### Build the application with upx compression
+- The UPX compression will reduce the size of the executable by up to 69%. This will increase the startup time.
+```Shell
+```
+{src="make.ps1" include-lines="11-22"}
 
 Or run:
 ```Bash
 Powershell.exe -File .\build.ps1 build
 ```
 
-### To clean the application folder
+### Clean the application and temp files
 
 ```Shell
 ```
-{src="make.ps1" include-lines="24-32"}
+{src="make.ps1" include-lines="27-34"}
 
 Or run:
 ```Bash
