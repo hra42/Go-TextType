@@ -2,6 +2,7 @@
 
 The following pages will describe the changes each version introduced to the project.
 
+- [v1.1.4](v1-1-4.md)
 - [v1.1.3](v1-1-3.md)
 - [v1.1.2](v1-1-2.md)
 - [v1.1.1](v1-1-1.md)

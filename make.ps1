@@ -3,7 +3,7 @@ param (
     [string]$action
 )
 
-$Version = "1.1.3"
+$Version = "1.1.4"
 $BuildID = Get-Date -Format "Hmmss"
 
 function build {
@@ -15,9 +15,12 @@ function build {
     Write-Host "Generating binary version info"
     goversioninfo -64 -product-ver-build $BuildID -ver-build $BuildID
     Write-Host "Building project"
-    go build -ldflags "-extldflags '-static' -w -s -H windowsgui -X main.AppVersion=$Version -X main.BuildID=$BUILDID" `
+    go build -ldflags `
+        "-extldflags '-static' -w -s -H windowsgui -X main.AppVersion=$Version -X main.BuildID=$BUILDID" `
         -o .\bin\TextType.exe .
     Write-Host "Build completed."
+    Write-Host "Compressing the binary"
+    upx --brute .\bin\TextType.exe
 }
 
 function clean {
