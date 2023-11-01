@@ -14,10 +14,11 @@
         </variables>
     </build-profile>
     <footer>
-        <copyright>2021 - 2023</copyright>
+        <copyright>2020 - 2023</copyright>
         <social type="blog" href="https://blog.postrausch.tech"/>
-        <link href="https://blog.postrausch.tech/about/">About me</link>
         <link href="https://github.com/hra42/go-texttype">GitHub</link>
+        <link href="https://postrausch.tech/impressum/">Imprint</link>
+        <link href="https://postrausch.tech/datenschutz/">Privacy Policy</link>
     </footer>
 
 </buildprofiles>
