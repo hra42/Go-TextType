@@ -4,12 +4,12 @@
     "FileVersion": {
       "Major": 1,
       "Minor": 1,
-      "Patch": 4
+      "Patch": 5
     },
     "ProductVersion": {
       "Major": 1,
       "Minor": 1,
-      "Patch": 4
+      "Patch": 5
     },
     "FileFlagsMask": "3f",
     "FileFlags ": "00",
@@ -21,10 +21,10 @@
   {
     "CompanyName": "Henry Rausch",
     "ProductName": "Text Type",
-    "ProductVersion": "1.1.4",
+    "ProductVersion": "1.1.5",
     "FileDescription": "This Program enters text from the clipboard as keyboard input.",
     "OriginalFilename": "TextType.exe",
-    "FileVersion": "1.1.4",
+    "FileVersion": "1.1.5",
     "LegalCopyright": "The Unlicense"
   },
   "VarFileInfo":
