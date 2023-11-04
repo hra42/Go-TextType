@@ -6,7 +6,7 @@
         <noindex-content>true</noindex-content>
         <color-preset>vivid</color-preset>
         <primary-color>deep-ocean</primary-color>
-        <header-logo>icon.png</header-logo>
+        <header-logo>icon-sq.png</header-logo>
     </variables>
     <build-profile instance="docs">
         <variables>
