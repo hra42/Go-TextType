@@ -7,7 +7,7 @@
 > and run the executable.  
 > Visit the [docs](https://go-texttype.postrausch.tech/) for more information.
 
-![Icon](icon.jpeg)
+![Icon](icon.png)
 
 This program is designed to print text from the clipboard using Keyboard events.
 Password entry into console applications is enabled by this feature.
