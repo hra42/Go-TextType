@@ -6,8 +6,30 @@ param (
 $Version = "1.1.5"
 $BuildID = Get-Date -Format "Hmmss"
 
-function build {
-    clean
+function Clean {
+    Write-Host "Cleaning project"
+    go clean
+    Write-Host "Cleaning binary folder"
+    if (Test-Path .\bin) {
+        Remove-Item -Force -Recurse .\bin
+    } else {
+        Write-Host "No binary folder to clean."
+    }
+    Write-Host "Cleaning resources folder completed."
+}
+
+function Dep {
+    Write-Host "Installing dependencies"
+    go get github.com/josephspurrier/goversioninfo/cmd/goversioninfo
+    go install github.com/josephspurrier/goversioninfo/cmd/goversioninfo
+    go get github.com/akavel/rsrc
+    go install github.com/akavel/rsrc
+    go get .
+    go mod tidy
+}
+
+function Build {
+    & Clean
     Write-Host "Starting build..."
     go mod tidy
     Write-Host "Generating binary icon"
@@ -23,37 +45,15 @@ function build {
     upx --brute .\bin\TextType.exe
 }
 
-function clean {
-    Write-Host "Cleaning project"
-    go clean
-    Write-Host "Cleaning binary folder"
-    if (Test-Path .\bin) {
-        Remove-Item -Force -Recurse .\bin
-    } else {
-        Write-Host "No binary folder to clean."
-    }
-    Write-Host "Cleaning resources folder completed."
-}
-
-function dep {
-    Write-Host "Installing dependencies"
-    go get github.com/josephspurrier/goversioninfo/cmd/goversioninfo
-    go install github.com/josephspurrier/goversioninfo/cmd/goversioninfo
-    go get github.com/akavel/rsrc
-    go install github.com/akavel/rsrc
-    go get .
-    go mod tidy
-}
-
 switch ($action) {
     'build' {
-        build
+        Build
     }
     'clean' {
-        clean
+        Clean
     }
     'dep' {
-        dep
+        Dep
     }
     default {
         Write-Host "Invalid action parameter. Use 'build' or 'clean' or 'dep'."

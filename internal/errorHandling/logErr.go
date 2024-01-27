@@ -7,8 +7,8 @@ import (
 
 func CheckError(err error) {
 	if err != nil {
-		if logging.Logger != nil {
-			logging.Logger.Println("Error: ", err)
+		if logging.ErrorLogger != nil {
+			logging.ErrorLogger.Println("Error: ", err)
 		} else {
 			log.Fatal("Logger is empty!")
 		}
