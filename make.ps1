@@ -3,7 +3,7 @@ param (
     [string]$action
 )
 
-$Version = "1.1.5"
+$Version = "1.1.6"
 $BuildID = Get-Date -Format "Hmmss"
 
 function Clean {
