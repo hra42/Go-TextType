@@ -3,13 +3,15 @@ package hotKeyConfig
 import (
 	"encoding/gob"
 	"github.com/hra42/Go-TextType/internal/errorHandling"
+	"github.com/hra42/Go-TextType/internal/fileStorage"
 	"github.com/hra42/Go-TextType/internal/logging"
 	"golang.design/x/hotkey"
 	"os"
 )
 
 func LoadHK() {
-	file, err := os.Open("hotkey.gob")
+	filePath := fileStorage.Path + "/hotkey.gob"
+	file, err := os.Open(filePath)
 	if err != nil {
 		if os.IsNotExist(err) {
 			logging.Logger.Println("No hotkey.gob file found")

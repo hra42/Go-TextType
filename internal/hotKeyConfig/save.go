@@ -2,11 +2,13 @@ package hotKeyConfig
 
 import (
 	"encoding/gob"
+	"github.com/hra42/Go-TextType/internal/fileStorage"
 	"os"
 )
 
 func SaveLastUsedHK(hkNumber int) error {
-	file, err := os.Create("hotkey.gob")
+	filePath := fileStorage.Path + "/hotkey.gob"
+	file, err := os.Create(filePath)
 	if err != nil {
 		return err
 	}
