@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/getlantern/systray"
+	"github.com/hra42/Go-TextType/internal/fileStorage"
 	"github.com/hra42/Go-TextType/internal/hotKeyConfig"
 	"github.com/hra42/Go-TextType/internal/logging"
 	"github.com/hra42/Go-TextType/internal/textType"
@@ -16,7 +17,9 @@ var (
 )
 
 func main() {
+	fileStorage.Path = fileStorage.Init()
 	logging.Logger = logging.SetupLogger()
+	logging.ErrorLogger = logging.SetupErrorLogger()
 	logging.Logger.Println("The App Version is", AppVersion)
 	logging.Logger.Println("The Build is", BuildID)
 	update.CheckUpdate(AppVersion)
