@@ -1,6 +1,6 @@
 module github.com/hra42/Go-TextType
 
-go 1.21
+go 1.22.2
 
 require (
 	github.com/gen2brain/beeep v0.0.0-20240112042604-c7bb2cd88fea
