@@ -28,23 +28,10 @@ func OnReady() {
 	systray.AddSeparator()
 	mStop := systray.AddMenuItem("Stop Text Type", "Stop the program")
 
-	if hotKeyConfig.HotKeyConfiguration.HotkeyNumber == 1 {
-		mHK1.Check()
-		mHK2.Uncheck()
-		mHK3.Uncheck()
-	} else if hotKeyConfig.HotKeyConfiguration.HotkeyNumber == 2 {
-		mHK1.Uncheck()
-		mHK2.Check()
-		mHK3.Uncheck()
-	} else if hotKeyConfig.HotKeyConfiguration.HotkeyNumber == 3 {
-		mHK1.Uncheck()
-		mHK2.Uncheck()
-		mHK3.Check()
-	} else {
-		mHK1.Uncheck()
-		mHK2.Uncheck()
-		mHK3.Uncheck()
-	}
+	// create array of menu items
+	menuitems := []*systray.MenuItem{mHK1, mHK2, mHK3}
+	// update the menu
+	updateHotkeyMenu(hotKeyConfig.HotKeyConfiguration.HotkeyNumber, menuitems)
 
 	if hotKeyConfig.HotKeyConfiguration.EnterKey {
 		selectEnterPressAfterPaste.Check()
@@ -129,4 +116,25 @@ func OnReady() {
 			}
 		}
 	}()
+}
+
+func updateHotkeyMenu(hotkeyConfig int, menuitems []*systray.MenuItem) {
+	switch hotkeyConfig {
+	case 1:
+		menuitems[0].Check()
+		menuitems[1].Uncheck()
+		menuitems[2].Uncheck()
+	case 2:
+		menuitems[0].Uncheck()
+		menuitems[1].Check()
+		menuitems[2].Uncheck()
+	case 3:
+		menuitems[0].Uncheck()
+		menuitems[1].Uncheck()
+		menuitems[2].Check()
+	default:
+		menuitems[0].Uncheck()
+		menuitems[1].Uncheck()
+		menuitems[2].Uncheck()
+	}
 }
