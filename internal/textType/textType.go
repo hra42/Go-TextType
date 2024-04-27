@@ -23,7 +23,7 @@ func TextType() {
 	}
 
 	// wait for 500ms before executing
-	time.Sleep(time.Millisecond * 500)
+	time.Sleep(time.Millisecond * 250)
 
 	// trim whitespace from the clipboard text
 	clipBoardText = strings.TrimSpace(clipBoardText)
