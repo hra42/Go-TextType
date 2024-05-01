@@ -1,8 +1,9 @@
 package errorHandling
 
 import (
-	"github.com/hra42/Go-TextType/internal/logging"
 	"log"
+
+	"github.com/hra42/Go-TextType/internal/logging"
 )
 
 func CheckError(err error) {
@@ -10,7 +11,7 @@ func CheckError(err error) {
 		if logging.ErrorLogger != nil {
 			logging.ErrorLogger.Println("Error: ", err)
 		} else {
-			log.Fatal("Logger is empty!")
+			log.Fatal("Logger is empty! Error: ", err)
 		}
 	}
 }
