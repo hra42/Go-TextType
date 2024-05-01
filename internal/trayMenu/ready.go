@@ -11,10 +11,20 @@ import (
 
 func OnReady() {
 	logging.Logger.Println("App is running...")
-	systray.SetIcon(ReadIcon())
+
+	// Icon handling
+    icon, err := readIcon()
+    if err != nil {
+        logging.Logger.Println(err)
+    } else {
+        systray.SetIcon(icon)
+    }
+
+	// Set up
 	systray.SetTitle("Text Type")
 	systray.SetTooltip("Control Text Type")
 
+	// tray menu
 	mHK := systray.AddMenuItem("Modify Hotkey", "Modify the hotkey")
 	mHK1 := mHK.AddSubMenuItemCheckbox("Ctrl + Shift + V", "Ctrl + Shift + V", true)
 	mHK2 := mHK.AddSubMenuItemCheckbox("Ctrl + Alt + S", "Ctrl + Alt + S", false)
@@ -55,9 +65,7 @@ func OnReady() {
 					err := hotKeyConfig.SaveLastUsedHK(1)
 					errorHandling.CheckError(err)
 					// Update Menu
-					mHK1.Check()
-					mHK2.Uncheck()
-					mHK3.Uncheck()
+					updateHotkeyMenu(1, menuitems)
 				}
 			case <-mHK2.ClickedCh:
 				if hotKeyConfig.HotKeyConfiguration.HotkeyNumber == 2 {
@@ -72,9 +80,7 @@ func OnReady() {
 					err := hotKeyConfig.SaveLastUsedHK(2)
 					errorHandling.CheckError(err)
 					// set the menu
-					mHK1.Uncheck()
-					mHK2.Check()
-					mHK3.Uncheck()
+					updateHotkeyMenu(2, menuitems)
 				}
 			case <-mHK3.ClickedCh:
 				if hotKeyConfig.HotKeyConfiguration.HotkeyNumber == 3 {
@@ -89,16 +95,14 @@ func OnReady() {
 					err := hotKeyConfig.SaveLastUsedHK(3)
 					errorHandling.CheckError(err)
 					// set the menu
-					mHK1.Uncheck()
-					mHK2.Uncheck()
-					mHK3.Check()
+					updateHotkeyMenu(3, menuitems)
 				}
 			case <-mStop.ClickedCh:
 				OnExit()
 			case <-hotKeyConfig.HK.Keydown():
 				textType.TextType()
 			case <-selectEnterPressAfterPaste.ClickedCh:
-				if hotKeyConfig.HotKeyConfiguration.EnterKey == true {
+				if hotKeyConfig.HotKeyConfiguration.EnterKey {
 					hotKeyConfig.HotKeyConfiguration.EnterKey = false
 					selectEnterPressAfterPaste.Uncheck()
 					err := hotKeyConfig.SaveLastUsedHK(hotKeyConfig.HotKeyConfiguration.HotkeyNumber)
@@ -119,22 +123,11 @@ func OnReady() {
 }
 
 func updateHotkeyMenu(hotkeyConfig int, menuitems []*systray.MenuItem) {
-	switch hotkeyConfig {
-	case 1:
-		menuitems[0].Check()
-		menuitems[1].Uncheck()
-		menuitems[2].Uncheck()
-	case 2:
-		menuitems[0].Uncheck()
-		menuitems[1].Check()
-		menuitems[2].Uncheck()
-	case 3:
-		menuitems[0].Uncheck()
-		menuitems[1].Uncheck()
-		menuitems[2].Check()
-	default:
-		menuitems[0].Uncheck()
-		menuitems[1].Uncheck()
-		menuitems[2].Uncheck()
+	for i, item := range menuitems {
+		if i == hotkeyConfig-1 {
+			item.Check()
+		} else {
+			item.Uncheck()
+		}
 	}
 }
