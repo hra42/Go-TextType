@@ -14,7 +14,9 @@ func CheckUpdate(AppVersion string) {
 	dumpfile, err := os.CreateTemp("", "icon.*.png")
 	errorHandling.CheckError(err)
 	defer deleteFile(dumpfile)
-	if _, err = dumpfile.Write(trayMenu.ReadIcon()); err != nil {
+	data, err := trayMenu.Icon.ReadFile("icon.ico")
+	errorHandling.CheckError(err)
+	if _, err = dumpfile.Write(data); err != nil {
 		errorHandling.CheckError(err)
 	}
 	if err = dumpfile.Close(); err != nil {
