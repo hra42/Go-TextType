@@ -22,7 +22,7 @@ func TextType() {
 		logging.Logger.Println("clipboard has text")
 	}
 
-	// wait for 500ms before executing
+	// wait for 250ms before executing to make sure the clipboard has the text
 	time.Sleep(time.Millisecond * 250)
 
 	// trim whitespace from the clipboard text
@@ -30,7 +30,7 @@ func TextType() {
 	// use robotgo to type the clipboard text.
 	robotgo.TypeStr(clipBoardText)
 	// press enter key
-	if hotKeyConfig.HotKeyConfiguration.EnterKey == true {
+	if hotKeyConfig.HotKeyConfiguration.EnterKey {
 		robotgo.KeyTap("enter")
 	}
 	logging.Logger.Println("clipboard entered")
