@@ -1,4 +1,7 @@
-# Go-TextType
+# Go-TextType - DEVELOPMENT IS PAUSED
+
+> [!Important]
+> Work on this project is currently paused, as I don't have the need anymore. Teamviewer can now paste passwords via keyboard emulation. I might be getting back to this in the future.
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/hra42/Go-TextType)](https://goreportcard.com/report/github.com/hra42/Go-TextType)
 
